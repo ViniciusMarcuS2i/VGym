@@ -1,5 +1,4 @@
 import { Center, Heading } from "native-base";
-
 type HeaderProps = {
     title:string;
 }

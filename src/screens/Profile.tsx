@@ -2,16 +2,18 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
-import { Center, Heading, ScrollView, Skeleton, Text, VStack } from "native-base";
+import { Center, Heading, ScrollView, Skeleton, Text, VStack, useToast } from "native-base";
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 const PHOTO_SIZE = 33;
 
 export function Profile(){
     const [photoIsLoading, setPhotoIsLoading] = useState(false);
     const [userPhoto, setUserPhoto] = useState('https://github.com/ViniciusMarcuS2i.png')
+    const toast = useToast();
 
    
         async function handleUserPhotoSelect(){
@@ -30,6 +32,17 @@ export function Profile(){
             }
     
             if (photoSelected.assets[0].uri) {
+                const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
+                console.log(photoInfo)
+
+                if(photoInfo.size && (photoInfo.size / 1024 / 1024) > 5) {
+                    return toast.show({
+                        title: "Essa imagem é muito grande. Escolha uma de até 5MB",
+                        bgColor: "red.500",
+                        placement: "top"
+                    })
+                }
+
                 setUserPhoto(photoSelected.assets[0].uri);
             }
     
@@ -78,7 +91,7 @@ export function Profile(){
                     />
                 </Center>   
                 <VStack px={10} mt={12} mb={9}>
-                    <Heading color="gray.200" fontSize="md" mb={2}>
+                    <Heading fontFamily="heading" color="gray.200" fontSize="md" mb={2}>
                         Alterar senha
                     </Heading>
                     <Input 

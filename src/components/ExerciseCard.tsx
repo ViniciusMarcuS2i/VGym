@@ -20,7 +20,7 @@ export function ExerciseCard({...rest} :Props){
                     mr={4}
                 />
                 <VStack  flex={1}>
-                    <Heading fontSize="lg" color="white">
+                    <Heading fontFamily="heading" fontSize="lg" color="white">
                         Remada Serrote
                     </Heading>
                     <Text fontSize="sm" color="gray.200" mt={1} numberOfLines={2}>
